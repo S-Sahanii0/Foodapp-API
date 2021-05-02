@@ -4,7 +4,7 @@ from itemmanagement.models import ItemList, Category, Order
 class ItemListSerializer(serializers.ModelSerializer):
     class Meta:
         model = ItemList
-        fields = ('id', 'name', 'description', 'image', 'category')
+        fields = ('id', 'name', 'description', 'image_url', 'category')
         depth = 1
 
 class CategorySerializer(serializers.ModelSerializer):

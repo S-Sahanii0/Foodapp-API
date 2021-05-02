@@ -23,8 +23,7 @@ class Category(models.Model):
 class ItemList(models.Model):
     name = models.CharField(max_length = 50, blank = False)
     description = models.TextField(null = True)
-    # image =  models.FileField(upload_to = "images/", null = True)
-    c_image_url = models.URLField(null = True)
+    image_url = models.URLField(null = True)
     category = models.ForeignKey(Category, null = True, on_delete = models.CASCADE)
 
     def __str__(self):
