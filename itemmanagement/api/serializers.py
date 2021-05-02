@@ -10,7 +10,7 @@ class ItemListSerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('id', 'c_name', 'c_description', 'c_image')
+        fields = ('id', 'c_name', 'c_description', 'c_image_url')
 
 class OrderSerializer(serializers.ModelSerializer):
     customer = serializers.SerializerMethodField('get_customer')
