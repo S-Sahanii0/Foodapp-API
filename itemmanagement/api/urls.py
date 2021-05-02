@@ -8,4 +8,5 @@ app_name = 'itemmanagement'
 urlpatterns = [
     path('items', ApiListItem.as_view(), name = 'items'),
     path('order/<int:id>', order_item, name = 'order'),
+    path('list_order', order_item, name = 'order'),
 ]

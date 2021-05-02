@@ -6,7 +6,7 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from itemmanagement.api.serializers import ItemListSerializer, CategorySerializer, OrderSerializer
-from itemmanagement.models import ItemList, Category
+from itemmanagement.models import ItemList, Category, Order
 from rest_framework.filters import SearchFilter, OrderingFilter
 
 class ApiListItem(ListAPIView):
@@ -15,23 +15,25 @@ class ApiListItem(ListAPIView):
     filter_backends = (SearchFilter, OrderingFilter)
     search_fields = ['name']
 
-@api_view(['POST', ])
+@api_view(['GET', ])
 @permission_classes((IsAuthenticated, ))
-def order_item(request, id):
-    try:
-        item = ItemList.objects.get(id = id)
-    
-    except ItemList.DoesNotExist:
-        return Response(status = status.HTTP_404_NOT_FOUND)
-
+def order_item(request):
     user = request.user
-   
+    try:
+        
+        ordered_items = Order.objects.filter(customer = user)[0]
+    
+    except IndexError as e:
+        data = {}
+        data['response'] = ['No items ordered yet']
+        return Response(data, status = status.HTTP_404_NOT_FOUND)
 
-    if request.method == "POST":
-        serializer = OrderSerializer(data = request.data)
-        if serializer.is_valid():
-            serializer.save(customer = user, item = item)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == "GET":
+        serializer = OrderSerializer(ordered_items)
+        return Response(serializer.data)
+
+    
+
+
 
     
