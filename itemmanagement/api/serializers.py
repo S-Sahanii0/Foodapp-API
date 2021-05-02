@@ -3,6 +3,7 @@ from itemmanagement.models import ItemList, Category, Order
 
 class ItemListSerializer(serializers.ModelSerializer):
     class Meta:
+        
         model = ItemList
         fields = ('id', 'name', 'description', 'image_url', 'category')
         depth = 1
@@ -24,6 +25,7 @@ class OrderSerializer(serializers.ModelSerializer):
     def get_customer(self, Order):
         customer = Order.customer.email
         return customer
+
 
    
 

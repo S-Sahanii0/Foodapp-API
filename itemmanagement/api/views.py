@@ -18,7 +18,7 @@ class ApiListItem(ListAPIView):
 class ApiListCategory(ListAPIView):
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
-    
+
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated, ))
 def order_item(request, id):
@@ -52,7 +52,39 @@ def list_order_item(request):
         return Response(data, status = status.HTTP_404_NOT_FOUND)
 
     if request.method == "GET":
-        serializer = OrderSerializer(ordered_items)
+        serializer = OrderSerializer(ordered_items, many=True)
         return Response(serializer.data)
 
+# @api_view(['GET', ])
+# @permission_classes((IsAuthenticated, ))
+# def list_item_by_category(request, name):
+#     category = Category.objects.filter(c_name = name)[0]
+#     try:
+        
+#         item = ItemList.objects.filter(category = category)[0]
     
+#     except IndexError as e:
+#         data = {}
+#         data['response'] = ['No items']
+#         return Response(data, status = status.HTTP_404_NOT_FOUND)
+
+#     if request.method == "GET":
+#         serializer = ItemListSerializer(item)
+#         return Response(serializer.data)
+
+class ApiListByCategory(ListAPIView):
+    # queryset = ItemList.objects.all()
+    serializer_class = ItemListSerializer
+    
+    def get_queryset(self):
+        """
+        Optionally restricts the returned purchases to a given user,
+        by filtering against a `username` query parameter in the URL.
+        """
+        queryset = ItemList.objects.all()
+        print(self.request.query_params)
+        c_name = self.request.query_params.get('c_name')
+        category = Category.objects.filter(c_name = c_name)[0]
+        queryset = queryset.filter(category=category)
+        print(queryset)
+        return queryset

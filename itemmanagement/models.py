@@ -3,7 +3,7 @@ from account.models import Account
 from datetime import datetime
 
 class Category(models.Model):
-    c_name = models.CharField(max_length = 50, blank = False)
+    c_name = models.CharField(max_length = 50, blank = False, unique = True)
     c_description = models.TextField(null = True)
     # c_image =  models.ImageField(upload_to = "images/")
     c_image_url = models.URLField(null =  True)
