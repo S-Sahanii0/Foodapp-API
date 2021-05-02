@@ -24,7 +24,7 @@ class RegistrationTestCase(APITestCase):
         response = self.client.post("/api/account/register", data)
         print(response.data)
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
+        
 class LoginTestCase(APITestCase):
     def testLogin(self):
         Account.objects.create_user(email = "test@gmail.com", firstname ="test1", lastname ="test1", 

@@ -7,11 +7,13 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.generics import ListAPIView
 from itemmanagement.api.serializers import ItemListSerializer, CategorySerializer, OrderSerializer
 from itemmanagement.models import ItemList, Category
-
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 class ApiListItem(ListAPIView):
     queryset = ItemList.objects.all()
     serializer_class = ItemListSerializer
+    filter_backends = (SearchFilter, OrderingFilter)
+    search_fields = ['name']
 
 @api_view(['POST', ])
 @permission_classes((IsAuthenticated, ))
