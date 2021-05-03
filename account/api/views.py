@@ -4,6 +4,8 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from account.api.serializers import RegistrationSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
+
 
 @api_view(['POST'])
 def registration_view(request):
@@ -24,3 +26,33 @@ def registration_view(request):
         else:
             data = serializer.errors
         return Response(data)
+
+class CustomAuthToken(ObtainAuthToken):
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data,
+                                           context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'email': user.email,
+            'user_type' : 'employer'
+        })
+        
+
+    def get(self, request):
+        try:
+            account = request.user
+        except Account.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        data= {}
+        if request.method == 'GET':
+            data['email'] = account.email
+            data['user_id']: account.pk
+
+            return Response(data)
