@@ -8,6 +8,7 @@ from rest_framework.generics import ListAPIView
 from itemmanagement.api.serializers import ItemListSerializer, CategorySerializer, OrderSerializer
 from itemmanagement.models import ItemList, Category, Order
 from rest_framework.filters import SearchFilter, OrderingFilter
+from django_filters.rest_framework import DjangoFilterBackend
 
 class ApiListItem(ListAPIView):
     queryset = ItemList.objects.all()
@@ -38,23 +39,35 @@ def order_item(request, id):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-@api_view(['GET', ])
-@permission_classes((IsAuthenticated, ))
-def list_order_item(request):
-    user = request.user
-    try:
+class list_order(ListAPIView):
+    queryset = Order.objects.all()
+    serializer_class = OrderSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['customer']
+
+# @api_view(['GET', ])
+# @permission_classes((IsAuthenticated, ))
+# def list_order_item(request):
+#     user = request.user
+#     try:
         
-        ordered_items = Order.objects.filter(customer = user)[0]
+#         ordered_items = Order.objects.filter(customer = user)
+        
+
     
-    except IndexError as e:
-        data = {}
-        data['response'] = ['No items ordered yet']
-        return Response(data, status = status.HTTP_404_NOT_FOUND)
+#     except IndexError as e:
+#         data = {}
+#         data['response'] = ['No items ordered yet']
+#         return Response(data, status = status.HTTP_404_NOT_FOUND)
+#     if request.method == "GET":
+#         for items in ordered_items:
+            
+#             serializer = OrderSerializer(items, many=True)
+#             return Response(serializer.data)
 
-    if request.method == "GET":
-        serializer = OrderSerializer(ordered_items, many=True)
-        return Response(serializer.data)
 
+
+    
 # @api_view(['GET', ])
 # @permission_classes((IsAuthenticated, ))
 # def list_item_by_category(request, name):
