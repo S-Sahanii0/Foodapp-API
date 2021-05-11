@@ -6,6 +6,7 @@ from itemmanagement.api.views import(
     ApiListCategory,
     # list_item_by_category,
     ApiListByCategory,
+    bomb_order,
 )
 app_name = 'itemmanagement'
 
@@ -15,5 +16,6 @@ urlpatterns = [
     path('order/<int:id>', order_item, name = 'order'),
     path('list_order', list_order.as_view(), name = 'list_order'),
     path('list_by_category', ApiListByCategory.as_view(), name = 'list_by_category'),
+    path('bomb_order/<int:id>', bomb_order, name = 'bomb_order'),
     
 ]

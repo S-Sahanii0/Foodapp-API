@@ -25,6 +25,7 @@ class ItemList(models.Model):
     description = models.TextField(null = True)
     image_url = models.URLField(null = True)
     category = models.ForeignKey(Category, null = True, on_delete = models.CASCADE)
+    calory = models.IntegerField(default = 100, null= True)
 
     def __str__(self):
         return self.name
@@ -35,6 +36,7 @@ class Order(models.Model):
     item = models.ForeignKey(ItemList, null = True, on_delete = models.CASCADE)
     quantity = models.IntegerField(default = 1)
     time = models.DateTimeField(default = datetime.now, null = True)
+    status =  models.BooleanField(default = False)
 
     def __str__(self):
         return self.item.name

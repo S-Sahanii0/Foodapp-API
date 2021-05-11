@@ -45,46 +45,6 @@ class list_order(ListAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['customer']
 
-# @api_view(['GET', ])
-# @permission_classes((IsAuthenticated, ))
-# def list_order_item(request):
-#     user = request.user
-#     try:
-        
-#         ordered_items = Order.objects.filter(customer = user)
-        
-
-    
-#     except IndexError as e:
-#         data = {}
-#         data['response'] = ['No items ordered yet']
-#         return Response(data, status = status.HTTP_404_NOT_FOUND)
-#     if request.method == "GET":
-#         for items in ordered_items:
-            
-#             serializer = OrderSerializer(items, many=True)
-#             return Response(serializer.data)
-
-
-
-    
-# @api_view(['GET', ])
-# @permission_classes((IsAuthenticated, ))
-# def list_item_by_category(request, name):
-#     category = Category.objects.filter(c_name = name)[0]
-#     try:
-        
-#         item = ItemList.objects.filter(category = category)[0]
-    
-#     except IndexError as e:
-#         data = {}
-#         data['response'] = ['No items']
-#         return Response(data, status = status.HTTP_404_NOT_FOUND)
-
-#     if request.method == "GET":
-#         serializer = ItemListSerializer(item)
-#         return Response(serializer.data)
-
 class ApiListByCategory(ListAPIView):
     # queryset = ItemList.objects.all()
     serializer_class = ItemListSerializer
@@ -101,3 +61,15 @@ class ApiListByCategory(ListAPIView):
         queryset = queryset.filter(category=category)
         print(queryset)
         return queryset
+
+@api_view(['POST', ])
+@permission_classes((IsAuthenticated, ))
+def bomb_order(request, id):
+    
+    order = Order.objects.get(id = id)
+    data = {}
+    if request.method == 'POST':
+        order.status = True
+        order.save()
+        data['response'] = 'Order completed'
+    return Response(data)

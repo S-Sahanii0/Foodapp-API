@@ -8,7 +8,7 @@ from rest_framework.authtoken.models import Token
 
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, fullname, phone, password=None):
+	def create_user(self, email, password=None):
 		if not email:
 			raise ValueError('Users must have an email address')
 		
@@ -16,20 +16,17 @@ class MyAccountManager(BaseUserManager):
 
 		user = self.model(
 			email=self.normalize_email(email),
-			fullname = fullname,
-			phone=phone,
+			
 		)
 
 		user.set_password(password)
 		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, fullname, phone, password):
+	def create_superuser(self, email, password):
 		user = self.create_user(
 			email=self.normalize_email(email),
 			password=password,
-			fullname = fullname,
-			phone=phone,
 			
 		)
 		user.is_admin = True
