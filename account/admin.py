@@ -5,10 +5,10 @@ from account.models import Account
 admin.site.site_header = "Foodapp API"
 
 class AccountAdmin(UserAdmin):
-	list_display = ('email','firstname','lastname','date_joined', 'last_login', 'is_admin', 'is_staff')
-	search_fields = ('email','firstname','lastname')
+	list_display = ('email','fullname','date_joined', 'last_login', 'is_admin', 'is_staff')
+	search_fields = ('email','fullname')
 	readonly_fields=('date_joined', 'last_login')
-	ordering = ('email','firstname')
+	ordering = ('email','fullname')
 
 	filter_horizontal = ()
 	list_filter = ()

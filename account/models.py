@@ -8,22 +8,15 @@ from rest_framework.authtoken.models import Token
 
 
 class MyAccountManager(BaseUserManager):
-	def create_user(self, email, firstname, lastname, phone, password=None):
+	def create_user(self, email, fullname, phone, password=None):
 		if not email:
 			raise ValueError('Users must have an email address')
-		if not firstname:
-			raise ValueError('Users must have a firstname')
-		if not lastname:
-			raise ValueError('Users must have a lastname')
-		if not phone:
-			raise ValueError('Users must have a phone number')
-
+		
 
 
 		user = self.model(
 			email=self.normalize_email(email),
-			firstname=firstname,
-			lastname=lastname,
+			fullname = fullname,
 			phone=phone,
 		)
 
@@ -31,13 +24,13 @@ class MyAccountManager(BaseUserManager):
 		user.save(using=self._db)
 		return user
 
-	def create_superuser(self, email, firstname, lastname, phone, password):
+	def create_superuser(self, email, fullname, phone, password):
 		user = self.create_user(
 			email=self.normalize_email(email),
 			password=password,
+			fullname = fullname,
 			phone=phone,
-			firstname=firstname,
-			lastname=lastname,
+			
 		)
 		user.is_admin = True
 		user.is_staff = True
@@ -48,10 +41,9 @@ class MyAccountManager(BaseUserManager):
 
 class Account(AbstractBaseUser):
     email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
-    firstname 				= models.CharField(max_length=30, unique=True)
-    lastname 				= models.CharField(max_length=30, unique=True)
-    phone 					= models.IntegerField(unique=True, null=True)
-    address= models.CharField(max_length = 50)
+    fullname 				= models.CharField(max_length=30, null = True, default = '')
+    phone 					= models.IntegerField(unique=True, null=True, default = 0)
+    address= models.CharField(max_length = 50, null = True, default = '')
     date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
     last_login				= models.DateTimeField(verbose_name='last login', auto_now=True)
     is_admin				= models.BooleanField(default=False)
@@ -62,7 +54,6 @@ class Account(AbstractBaseUser):
 
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['firstname', 'lastname', 'phone']
     objects = MyAccountManager()
 
     def __str__(self):
