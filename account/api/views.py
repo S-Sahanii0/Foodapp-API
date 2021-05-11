@@ -17,8 +17,7 @@ def registration_view(request):
             account = serializer.save()
             data['response'] = 'Successfully registered'
             data['email'] = account.email
-            data['firstname'] = account.firstname
-            data['lastname'] = account.lastname
+            data['fullname'] = account.fullname
             data['phone'] = account.phone
             data['address'] = account.address
             token = Token.objects.get(user=account).key
@@ -40,7 +39,7 @@ class CustomAuthToken(ObtainAuthToken):
             'token': token.key,
             'user_id': user.pk,
             'email': user.email,
-            'user_type' : 'employer'
+            
         })
         
 
