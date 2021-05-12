@@ -26,6 +26,8 @@ class ItemList(models.Model):
     image_url = models.URLField(null = True)
     category = models.ForeignKey(Category, null = True, on_delete = models.CASCADE)
     calory = models.IntegerField(default = 100, null= True)
+    price = models.IntegerField(default =  1, null = True)
+    is_popular = models.BooleanField(default = False)
 
     def __str__(self):
         return self.name
