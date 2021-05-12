@@ -63,7 +63,6 @@ class ApiListByCategory(ListAPIView):
         return queryset
 
 @api_view(['POST', ])
-@permission_classes((IsAuthenticated, ))
 def bomb_order(request, id):
     
     order = Order.objects.get(id = id)
