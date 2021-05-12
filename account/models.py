@@ -40,7 +40,7 @@ class Account(AbstractBaseUser):
     CHOICES = (('0', 'Cash on delivery'), ('1', 'Credit Card'))
     email 					= models.EmailField(verbose_name="email", max_length=60, unique=True)
     fullname 				= models.CharField(max_length=30, null = True, default = '')
-    phone 					= models.IntegerField(unique=True, null=True, default = 0)
+    phone 					= models.IntegerField(null=True, default = 0)
     address= models.CharField(max_length = 50, null = True, default = '')
     payment_option= models.CharField(max_length=40, choices= CHOICES, default = 0, null = True)
     date_joined				= models.DateTimeField(verbose_name='date joined', auto_now_add=True)
