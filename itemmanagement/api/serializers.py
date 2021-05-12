@@ -26,7 +26,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Order
-        fields = ('customer', 'item', 'quantity', 'time')
+        fields = ('customer', 'item', 'quantity', 'time', 'status')
         
 
     def get_customer(self, Order):
