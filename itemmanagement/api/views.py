@@ -21,7 +21,6 @@ class ApiListCategory(ListAPIView):
     serializer_class = CategorySerializer
 
 @api_view(['POST', ])
-@permission_classes((IsAuthenticated, ))
 def order_item(request, id):
     try:
         item = ItemList.objects.get(id = id)
