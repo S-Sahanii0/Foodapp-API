@@ -15,11 +15,9 @@ def registration_view(request):
         data = {}
         if serializer.is_valid():
             account = serializer.save()
-            data['response'] = 'Successfully registered'
+            data['id'] = account.id
             data['email'] = account.email
-            data['fullname'] = account.fullname
-            data['phone'] = account.phone
-            data['address'] = account.address
+           
             token = Token.objects.get(user=account).key
             data['token'] = token
         else:
@@ -36,9 +34,10 @@ class CustomAuthToken(ObtainAuthToken):
         token, created = Token.objects.get_or_create(user=user)
 
         return Response({
-            'token': token.key,
-            'user_id': user.pk,
+            
+            'id': user.pk,
             'email': user.email,
+            'token': token.key,
             
         })
         
@@ -49,9 +48,8 @@ class CustomAuthToken(ObtainAuthToken):
         except Account.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        data= {}
+        data = {}
         if request.method == 'GET':
-            data['email'] = account.email
-            data['user_id']: account.pk
-
-            return Response(data)
+           data['id'] = account.id,
+        data['email'] = account.email
+        return Response(data)

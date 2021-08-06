@@ -71,3 +71,4 @@ def bomb_order(request, id):
         order.save()
         data['response'] = 'Order completed'
     return Response(data)
+
